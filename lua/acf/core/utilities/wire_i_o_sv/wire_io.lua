@@ -21,8 +21,8 @@ function WireIO.SetupInputs(Entity, List, Data, ...)
 			type = string.Replace(string.Replace(exp[2],"[",""),"]","")
 		end
 		local ns=string.Explode("(",exp[1])
-		types[K] = type:upper()
-		names[K] = ns[1]
+		types[K] = string.Trim(type:upper())
+		names[K] = string.Trim(ns[1])
 		descs[K] = string.Replace(ns[2],")","")
 	end
 
@@ -37,6 +37,7 @@ function WireIO.SetupInputs(Entity, List, Data, ...)
 	if Entity.Inputs then
 		Entity.Inputs = WireLib.AdjustInputs(Entity, Inputs)
 	else
+		PrintTable(names)
 
 		--Entity.Inputs = WireLib.CreateInputs(Entity, Inputs)
 		WireLib.CreateSpecialInputs(Entity, names, types, descs)
@@ -62,8 +63,8 @@ function WireIO.SetupOutputs(Entity, List, Data, ...)
 			type = string.Replace(string.Replace(exp[2],"[",""),"]","")
 		end
 		local ns=string.Explode("(",exp[1])
-		types[K] = type:upper()
-		names[K] = ns[1]
+		types[K] = string.Trim(type:upper())
+		names[K] = string.Trim(ns[1])
 		descs[K] = string.Replace(ns[2],")","")
 	end
 
@@ -79,6 +80,7 @@ function WireIO.SetupOutputs(Entity, List, Data, ...)
 		Entity.Outputs = WireLib.AdjustOutputs(Entity, Outputs)
 	else
 		WireLib.CreateSpecialOutputs(Entity, names, types, descs)
+		--PrintTable(Entity.Outputs)
 		--WireLib.CreateOutputs(Entity, Outputs)
 		--Entity.Outputs = WireLib.CreateOutputs(Entity, Outputs)
 	end
