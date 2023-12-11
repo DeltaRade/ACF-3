@@ -37,7 +37,6 @@ function WireIO.SetupInputs(Entity, List, Data, ...)
 	if Entity.Inputs then
 		Entity.Inputs = WireLib.AdjustInputs(Entity, Inputs)
 	else
-		PrintTable(names)
 
 		--Entity.Inputs = WireLib.CreateInputs(Entity, Inputs)
 		WireLib.CreateSpecialInputs(Entity, names, types, descs)
