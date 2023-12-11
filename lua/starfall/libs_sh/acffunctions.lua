@@ -44,6 +44,9 @@ local Ignored = {
 	Items = true,
 }
 
+
+local props={}
+
 if SERVER then
 	RegisterPrivilege("acf.createAmmo", "Create ACF Ammo Crate", "Allows the user to create ACF Ammo Crates", { usergroups = { default = 3 } })
 	RegisterPrivilege("acf.createEngine", "Create ACF Engine", "Allows the user to create ACF Engines", { usergroups = { default = 3 } })
@@ -182,7 +185,8 @@ end
 local function OnRemove(Entity, Player)
 	plyCount:free(Player, 1)
 
-	instance.data.props.props[Entity] = nil
+	--instance.data.props.props[Entity] = nil
+	props[Entity] = nil
 end
 
 local function RegisterEntity(Entity)
@@ -192,7 +196,8 @@ local function RegisterEntity(Entity)
 
 	plyCount:free(Player, -1)
 
-	instance.data.props.props[Entity] = true
+	--instance.data.props.props[Entity] = true
+	props[Entity] = true
 end
 
 --===============================================================================================--
@@ -560,7 +565,7 @@ if SERVER then
 		local Position = SF.clampPos(vunwrap(pos))
 		local Angles   = aunwrap(ang)
 		local Data     = UnwrapTable(data)
-		local Undo     = not instance.data.props.undo
+		local Undo     = false--not instance.data.props.undo
 
 		local Success, Entity = Entities.Spawn("acf_ammo", Player, Position, Angles, Data, Undo)
 
@@ -596,7 +601,7 @@ if SERVER then
 		local Position = SF.clampPos(vunwrap(pos))
 		local Angles   = aunwrap(ang)
 		local Data     = UnwrapTable(data)
-		local Undo     = not instance.data.props.undo
+		local Undo     = false--not instance.data.props.undo
 
 		local Success, Entity = Entities.Spawn("acf_engine", Player, Position, Angles, Data, Undo)
 
@@ -632,7 +637,7 @@ if SERVER then
 		local Position = SF.clampPos(vunwrap(pos))
 		local Angles   = aunwrap(ang)
 		local Data     = UnwrapTable(data)
-		local Undo     = not instance.data.props.undo
+		local Undo     = false--not instance.data.props.undo
 
 		local Success, Entity = Entities.Spawn("acf_fueltank", Player, Position, Angles, Data, Undo)
 
@@ -668,7 +673,7 @@ if SERVER then
 		local Position = SF.clampPos(vunwrap(pos))
 		local Angles   = aunwrap(ang)
 		local Data     = UnwrapTable(data)
-		local Undo     = not instance.data.props.undo
+		local Undo     = false--not instance.data.props.undo
 
 		local Success, Entity = Entities.Spawn("acf_gearbox", Player, Position, Angles, Data, Undo)
 
@@ -704,7 +709,7 @@ if SERVER then
 		local Position = SF.clampPos(vunwrap(pos))
 		local Angles   = aunwrap(ang)
 		local Data     = UnwrapTable(data)
-		local Undo     = not instance.data.props.undo
+		local Undo     = false--not instance.data.props.undo
 
 		local Success, Entity = Entities.Spawn("acf_gun", Player, Position, Angles, Data, Undo)
 

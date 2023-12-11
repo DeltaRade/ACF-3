@@ -10,8 +10,20 @@ function WireIO.SetupInputs(Entity, List, Data, ...)
 	local Objects = { ... }
 	local Inputs  = {}
 
+
+	local names, types, descs = {} ,{}, {}
 	for K, V in ipairs(List) do
 		Inputs[K] = V
+
+		local exp = string.Explode("[",V,false)
+		local type = "NORMAL"
+		if exp[2] then
+			type = string.Replace(string.Replace(exp[2],"[",""),"]","")
+		end
+		local ns=string.Explode("(",exp[1])
+		types[K] = type:upper()
+		names[K] = ns[1]
+		descs[K] = string.Replace(ns[2],")","")
 	end
 
 	for _, V in ipairs(Objects) do
@@ -25,7 +37,9 @@ function WireIO.SetupInputs(Entity, List, Data, ...)
 	if Entity.Inputs then
 		Entity.Inputs = WireLib.AdjustInputs(Entity, Inputs)
 	else
-		Entity.Inputs = WireLib.CreateInputs(Entity, Inputs)
+
+		--Entity.Inputs = WireLib.CreateInputs(Entity, Inputs)
+		WireLib.CreateSpecialInputs(Entity, names, types, descs)
 	end
 end
 
@@ -37,9 +51,20 @@ end
 function WireIO.SetupOutputs(Entity, List, Data, ...)
 	local Objects = { ... }
 	local Outputs = {}
-
+	local names, types, descs = {} ,{}, {}
 	for K, V in ipairs(List) do
 		Outputs[K] = V
+		local pattern = "%[.*%]"
+
+		local exp = string.Explode("[",V,false)
+		local type = "NORMAL"
+		if exp[2] then
+			type = string.Replace(string.Replace(exp[2],"[",""),"]","")
+		end
+		local ns=string.Explode("(",exp[1])
+		types[K] = type:upper()
+		names[K] = ns[1]
+		descs[K] = string.Replace(ns[2],")","")
 	end
 
 	for _, V in ipairs(Objects) do
@@ -53,6 +78,8 @@ function WireIO.SetupOutputs(Entity, List, Data, ...)
 	if Entity.Outputs then
 		Entity.Outputs = WireLib.AdjustOutputs(Entity, Outputs)
 	else
-		Entity.Outputs = WireLib.CreateOutputs(Entity, Outputs)
+		WireLib.CreateSpecialOutputs(Entity, names, types, descs)
+		--WireLib.CreateOutputs(Entity, Outputs)
+		--Entity.Outputs = WireLib.CreateOutputs(Entity, Outputs)
 	end
 end
