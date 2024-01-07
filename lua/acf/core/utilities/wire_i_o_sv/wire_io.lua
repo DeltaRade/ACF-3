@@ -54,7 +54,6 @@ function WireIO.SetupOutputs(Entity, List, Data, ...)
 	local names, types, descs = {} ,{}, {}
 	for K, V in ipairs(List) do
 		Outputs[K] = V
-		local pattern = "%[.*%]"
 
 		local exp = string.Explode("[",V,false)
 		local type = "NORMAL"
@@ -79,8 +78,6 @@ function WireIO.SetupOutputs(Entity, List, Data, ...)
 		Entity.Outputs = WireLib.AdjustOutputs(Entity, Outputs)
 	else
 		WireLib.CreateSpecialOutputs(Entity, names, types, descs)
-		--PrintTable(Entity.Outputs)
-		--WireLib.CreateOutputs(Entity, Outputs)
 		--Entity.Outputs = WireLib.CreateOutputs(Entity, Outputs)
 	end
 end
