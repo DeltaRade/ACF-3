@@ -1,3 +1,4 @@
+-- Please see lua\acf\menu\tool_functions.lua for more information on how this ACF tool works
 local ACF        = ACF
 local Entities   = ACF.Classes.Entities
 local CopiedData = {}
@@ -108,7 +109,7 @@ local function CreateNewEntity(Player, Trace)
 	local Success, Result = Entities.Spawn(Class, Player, Position, Angles, Data)
 
 	if not Success then
-		Message = "Couldn't create entity: " .. Result
+		Message = "#tool.acfcopy.create_fail " .. tostring(Result)
 	else
 		local PhysObj = Result:GetPhysicsObject()
 
@@ -118,7 +119,7 @@ local function CreateNewEntity(Player, Trace)
 			PhysObj:EnableMotion(false)
 		end
 
-		Message = "Entity created successfully."
+		Message = "#tool.acfcopy.create_succeed"
 	end
 
 	ACF.SendMessage(Player, Result and "Info" or "Error", Message)
@@ -135,7 +136,7 @@ ACF.RegisterOperation("acfcopy", "Main", "CopyPaste", {
 
 		if not IsValid(Entity) then return CreateNewEntity(Player, Trace) end
 		if not isfunction(Entity.Update) then
-			ACF.SendMessage(Player, "Error", "This entity doesn't support updating!")
+			ACF.SendMessage(Player, "Error", "#tool.acfcopy.unsupported")
 			return false
 		end
 
@@ -143,14 +144,14 @@ ACF.RegisterOperation("acfcopy", "Main", "CopyPaste", {
 		local Data  = GetSpawnData(Player, Entity, Class)
 
 		if not Data then
-			ACF.SendMessage(Player, "Error", "No information has been copied for '", Class, "' entities!")
+			ACF.SendMessage(Player, "Error", "#tool.acfcopy.no_info_copied1 " .. Class .. " #tool.acfcopy.no_info_copied2")
 			return false
 		end
 
 		local Result, Message = Entities.Update(Entity, Data)
 
 		if not Result then
-			Message = "Couldn't update entity: " .. Message
+			Message = "#tool.acfcopy.update_fail " .. Message
 		end
 
 		ACF.SendMessage(Player, Result and "Info" or "Error", Message)
@@ -179,21 +180,21 @@ ACF.RegisterOperation("acfcopy", "Main", "CopyPaste", {
 
 ACF.RegisterToolInfo("acfcopy", "Main", "CopyPaste", {
 	name = "left",
-	text = "Update the ACF entity with the copied information for its class.",
+	text = "#tool.acfcopy.left",
 })
 
 ACF.RegisterToolInfo("acfcopy", "Main", "CopyPaste", {
 	name = "left_spawn",
-	text = "If no entity is hit, a new entity will be created with the copied information.",
+	text = "#tool.acfcopy.left_spawn",
 	icon2 = "gui/info",
 })
 
 ACF.RegisterToolInfo("acfcopy", "Main", "CopyPaste", {
 	name = "right",
-	text = "Copy the relevant information from an ACF entity.",
+	text = "#tool.acfcopy.right",
 })
 
 ACF.RegisterToolInfo("acfcopy", "Main", "CopyPaste", {
 	name = "info",
-	text = "You can toggle the copied information you want to apply/ignore when updating an ACF entity on the tool menu.",
+	text = "#tool.acfcopy.info",
 })

@@ -55,10 +55,10 @@ function Damage.doSquishyDamage(Entity, DmgResult, DmgInfo)
 	DmgResult:SetFactor(1) -- We don't care about the penetration factor on squishy targets
 
 	if Hitbox == "none" then -- Default damage
-		DmgResult:SetThickness(Size * 0.2 * 0.02)
+		DmgResult:SetThickness(Size * 0.1)
 
 		HitRes = DmgResult:Compute()
-		Damage = HitRes.Damage * 20
+		Damage = HitRes.Damage * 5
 	else
 		-- Using player armor for fake armor works decently, as even if you don't take actual damage, the armor takes 1 point of damage, so it can potentially wear off
 		-- These funcs are also done on a hierarchy sort of system, so if the helmet is penetrated, then DamageHead is called, same for Vest -> Chest
@@ -71,10 +71,10 @@ function Damage.doSquishyDamage(Entity, DmgResult, DmgInfo)
 		elseif Hitbox == "chest" then
 			Damage, HitRes = ACF.SquishyFuncs.DamageChest(Entity, HitRes, DmgResult)
 		else
-			DmgResult:SetThickness(Size * 0.2 * 0.02)
+			DmgResult:SetThickness(Size * 0.1)
 
 			HitRes = DmgResult:Compute()
-			Damage = HitRes.Damage * 10
+			Damage = HitRes.Damage * 5
 		end
 	end
 
@@ -92,12 +92,15 @@ end
 -- @param DmgInfo A DamageInfo object.
 -- @return The output of the DamageResult object.
 function Damage.doVehicleDamage(Entity, DmgResult, DmgInfo)
-	local Driver = Entity:GetDriver()
 
-	if IsValid(Driver) then
-		DmgInfo:SetHitGroup(math.random(0, 7)) -- Hit a random part of the driver
+	if not IsValid(Entity.Alias) then
+		local Driver = Entity:GetDriver()
 
-		Damage.dealDamage(Driver, DmgResult, DmgInfo) -- Deal direct damage to the driver
+		if IsValid(Driver) then
+			DmgInfo:SetHitGroup(math.random(0, 7)) -- Hit a random part of the driver
+
+			Damage.dealDamage(Driver, DmgResult, DmgInfo) -- Deal direct damage to the driver
+		end
 	end
 
 	return Damage.doPropDamage(Entity, DmgResult, DmgInfo) -- We'll just damage it like a regular prop

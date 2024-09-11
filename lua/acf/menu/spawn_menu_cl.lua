@@ -75,10 +75,12 @@ do -- Menu population functions
 	end
 
 	ACF.AddMenuOption(1, "About the Addon", "information")
-	ACF.AddMenuOption(101, "Settings", "wrench")
+	ACF.AddMenuOption(101, "#acf.menu.settings", "wrench")
 	ACF.AddMenuOption(201, "Entities", "brick")
 	ACF.AddMenuOption(9999, "Fun Stuff", "bricks")
+	ACF.AddMenuOption(100000, "Scanner", "magnifier")
 end
+
 
 do -- ACF Menu context panel
 	local function GetSortedList(List)
